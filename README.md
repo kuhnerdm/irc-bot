@@ -15,7 +15,7 @@ This repo contains the code for an IRC bot to be run through the command line. I
 * chan     - The channel of the IRC server to connect to
 * usernick - The IRC nick of the user running the bot (i.e. your nick)
 
-2. Run KuhnerdmBot.py from the command line in the irc-bot directory
+\2. Run KuhnerdmBot.py from the command line in the irc-bot directory
 
 #Functions
 
@@ -27,7 +27,6 @@ This repo contains the code for an IRC bot to be run through the command line. I
 * function    - String containing first word in the message
 * args        - String containing all arguments in "message" (i.e. words after "function")
 * arg         - List containing all arguments *including* "function" (i.e. arg[0] = function; arg[1] = first arg)
-* 
 
 **Sending Messages** - irc-bot posts to the IRC channel by sending the server a message in IRC protocol. The process is simplified by the use of "send_to_channel", which takes a string and posts it to the channel. irc-bot also responds to pings in a similar manner, but the process is automated.
 
