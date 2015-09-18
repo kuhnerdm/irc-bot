@@ -178,8 +178,8 @@ while True: # Loops until connection breaks
 		
 	if data.find('PRIVMSG') != -1: # If data is not a ping
 		message = (' '.join(data.split(' ')[3:]))[1:] # Split misc data from the actual message
-		if message.lower().find(chan) == -1 or message.lower().find('KuhnerdmBot') == -1: # If it's a post to chan or a PM, continue
-			nick = data.split('!')[ 0 ].replace(':','') # Assigns the sender to "nick"
+		if message.lower().find(chan) == -1 or message.lower().find('KuhnerdmBot') == -1: # If it's not a ping, continue
+			nick = data.split('!')[0].replace(':','') # Assigns the sender to "nick"
 			destination = ''.join(data.split(' ')[2]) # Assigns the receiving channel to "destination"
 			print 'Message is ' + message.rstrip('\r\n') + ' from ' + nick + '\r\n' # For debug
 			if message.strip() != '': # If there is not just whitespace in the message
