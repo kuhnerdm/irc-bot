@@ -9,8 +9,8 @@ locale.setlocale(locale.LC_ALL, 'usa') # Sets default locale to USA
 Connection details - Edit here
 '''
 
-debug = True # For debug mode
-nick = 'KuhnerdmBot' # Define nick on IRC
+debug = False # For debug mode
+bot_nick = 'KuhnerdmBot' # Define nick on IRC
 pw = '12345luggagecombo' # Define pass on IRC
 network = 'irc.freenode.net' # Define IRC network
 port = 6667 # Define IRC server port
@@ -111,6 +111,28 @@ def delete_echo(command):
 			echoes_file.write(line)
 	send_to_channel('Echo deleted.')
 	echoes = populate_echoes()
+	
+'''
+edit_echo(command):
+Used when an echo is edited
+Edits an echo's response in the KuhnerdmBotEchoes.txt file, given the command of the echo to be edited and the new response
+'''
+
+def edit_echo(command, response):
+	global echoes
+	with open('KuhnerdmBotEchoes.txt', 'r') as echoes_file:
+		echoes_file_lines = echoes_file.readlines()
+	with open('KuhnerdmBotEchoes.txt', 'r') as echoes_file:
+		num_lines = sum(1 for line in echoes_file)
+	with open('KuhnerdmBotEchoes.txt', 'w') as echoes_file:
+		for i in range(num_lines):
+			if len(echoes_file_lines) - 1 >= i:
+				if echoes_file_lines[i] == 'Command: ' + command + '\n':
+					echoes_file_lines[i+1] = 'Response: ' + response + '\n'
+		for line in echoes_file_lines:
+			echoes_file.write(line)
+	send_to_channel('Echo edited.')
+	echoes = populate_echoes()
 
 '''
 getdogeminedinfo():
@@ -158,11 +180,11 @@ irc.connect((network,port)) # Connect to the server
 '''Set up receive buffer and send user info and such'''
 
 irc.recv (4096) # Setting up the Buffer
-irc.send('NICK ' + nick + '\r\n') # Send nick to the server
+irc.send('NICK ' + bot_nick + '\r\n') # Send nick to the server
 irc.send('USER kuhnerdm kuhnerdm kuhnerdm :kuhnerdm IRC\r\n') # Send user info to the server
 irc.send('JOIN ' + chan + '\r\n') # Join chan
-irc.send('PRIVMSG ' + 'NickServ' + ' :IDENTIFY ' + nick + ' ' + pw + '\r\n') # Identify
-send_to_channel(nick + ' is IN THE BUILDING!') # Send joining message
+irc.send('PRIVMSG ' + 'NickServ' + ' :IDENTIFY ' + bot_nick + ' ' + pw + '\r\n') # Identify
+send_to_channel(bot_nick + ' is IN THE BUILDING!') # Send joining message
 
 '''Start main loop and create receive buffer'''
 
@@ -195,7 +217,7 @@ while True: # Loops until connection breaks
 							args = item
 						else:
 							args += ' ' + item
-				
+				print 'args is ' + args + '\n'
 				'''Respond to commands'''
 				
 				if function.lower() in echoes: # If command is a custom echo
@@ -203,7 +225,7 @@ while True: # Loops until connection breaks
 				elif function.lower() == ',echo': # If giving an echo-related command
 					if all(c in string.printable for c in message) == True:
 						if len(arg) == 1 or len(arg) == 2:
-							send_to_channel('Syntax error. Proper syntax: ,echo add [command] [response] OR ,echo delete [command]') # Prints bad syntax response
+							send_to_channel('Syntax error. Proper syntax: ,echo add [command] [response] OR ,echo delete [command] OR ,echo edit [command] [response]') # Prints bad syntax response
 						else:	
 							if arg[1].lower() == 'add': # If adding an echo
 								if arg[2][0] == ',':
@@ -229,8 +251,20 @@ while True: # Loops until connection breaks
 										send_to_channel('Error: You do not have permissions to delete this echo.')
 									else:
 										delete_echo(echo_command_to_be_deleted)
+							elif arg[1].lower() == 'edit': # If editing an echo
+								if arg[2][0] == ',':
+									send_to_channel('Syntax error. Do not place a comma before the command.')
+								elif ',' + arg[2].lower().rstrip('\r\n') not in echoes:
+									send_to_channel('Error: This echo does not exist.')
+								else:
+									echo_command_to_be_edited = arg[2].lower()
+									echo_new_response = args.split(' ',2)[2].rstrip('\r\n')
+									if not(echoes[',' + echo_command_to_be_edited][1] == nick or echoes[',' + echo_command_to_be_edited][1] == usernick):
+										send_to_channel('Error: You do not have permissions to edit this echo.')
+									else:
+										edit_echo(echo_command_to_be_edited, echo_new_response)
 							else:
-								send_to_channel('Syntax error. Proper syntax: ,echo add [command] [response]') # Prints bad syntax response
+								send_to_channel('Syntax error. Proper syntax: ,echo add [command] [response] OR ,echo delete [command] OR ,echo edit [command] [response]') # Prints bad syntax response
 				elif function.lower() == ',say' and nick == usernick and destination == 'KuhnerdmBot': # Command: ,say (PM only; me only)
 					send_to_channel(args) # Prints args
 				elif function.lower() == ',help': # Command: ,help
@@ -238,7 +272,7 @@ while True: # Loops until connection breaks
 				elif function.lower() == '!mobilize': # Command: !mobilize
 					send_to_channel(nick + ' ROLLING OUT!') # Prints mobilize reply
 				elif function.lower() == ',exit' and nick == usernick: # Command: ,exit (me only)
-					send_to_channel(nick + ' shutting down.') # Prints shutting down text
+					send_to_channel(bot_nick + ' shutting down.') # Prints shutting down text
 					sys.exit() #DC
 				elif function.lower() == ',window': # Command: ,window
 					send_to_channel('Throw it out the window, the window, the second-story window!') # Prints window reply

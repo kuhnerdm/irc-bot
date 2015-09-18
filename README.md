@@ -52,8 +52,12 @@ The format for adding echoes is:
 The format for deleting echoes is:
 
     ,echo delete [command]
+	
+The format for editing echoes is:
 
-Note: ',echo delete' only works if "nick" (in KuhnerdmBot.py) is equal to "User" (in KuhnerdmBotEchoes.txt). ',echo add' only works if the echo doesn't already exist and is not found in the list of reserved words (e.g. A user cannot create ',fud' because it is in the list of reserved words, and that same user cannot create ',test' because it is already in KuhnerdmBotEchoes.txt). At this point, irc-bot cannot change a pre-existing echo's response, but this can be accomplished by deleting and re-adding the echo.
+	,echo edit [command] [response]
+
+Note: ',echo delete' and ',echo edit' only work if "nick" (in KuhnerdmBot.py) is equal to "User" (in KuhnerdmBotEchoes.txt). ',echo add' only works if the echo doesn't already exist and is not found in the list of reserved words (e.g. A user cannot create ',fud' because it is in the list of reserved words, and that same user cannot create ',test' because it is already in KuhnerdmBotEchoes.txt).
 
 **Speaking for Bot Owner** - irc-bot allows the bot owner (i.e. the user with the nick specified in "usernick") to "speak" through the bot. This is done by PM-ing the bot the following:
 
