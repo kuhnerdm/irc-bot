@@ -9,7 +9,7 @@ locale.setlocale(locale.LC_ALL, 'usa') # Sets default locale to USA
 Connection details - Edit here
 '''
 
-debug = True # For debug mode
+debug = False # For debug mode
 nick = 'KuhnerdmBot' # Define nick on IRC
 pw = '12345luggagecombo' # Define pass on IRC
 network = 'irc.freenode.net' # Define IRC network
