@@ -9,7 +9,7 @@ locale.setlocale(locale.LC_ALL, 'usa') # Sets default locale to USA
 Connection details - Edit here
 '''
 
-debug = False # For debug mode
+debug = True # For debug mode
 nick = 'KuhnerdmBot' # Define nick on IRC
 pw = '12345luggagecombo' # Define pass on IRC
 network = 'irc.freenode.net' # Define IRC network
@@ -35,8 +35,7 @@ The value is a list containing the response and user in the syntax [response, us
 '''
 
 def populate_echoes():
-	global echoes
-	echoes = {}
+	new_echoes = {}
 	with open('KuhnerdmBotEchoes.txt', 'r') as echoes_file:
 		num_lines = sum(1 for line in echoes_file)
 	with open('KuhnerdmBotEchoes.txt', 'r') as echoes_file:
@@ -44,8 +43,9 @@ def populate_echoes():
 			echo_command = ',' + echoes_file.readline().replace('Command: ', '').replace('\r', '').replace('\n', '').replace(',\xef\xbb\xbf', '')
 			echo_response = echoes_file.readline().replace('Response: ', '').replace('\r', '').replace('\n', '')
 			echo_nick = echoes_file.readline().replace('User: ', '').replace('\r', '').replace('\n', '')
-			echoes[echo_command] = [echo_response, echo_nick]
-	return echoes
+			new_echoes[echo_command] = [echo_response, echo_nick]
+	echoes_file.close()
+	return new_echoes
 	
 '''
 add_echo(args):
@@ -64,12 +64,12 @@ def add_echo(args):
 	for x in echo_response_list:
 		echo_response += x.rstrip('\r\n')
 		echo_response += ' '
-	with open('KuhnerdmBotEchoes.txt', 'r+') as echoes_file:
-		if (',' + echo_command) in echoes:
-			return 1
-		elif echo_command in reserved_commands:
-			return 2
-		else:
+	if (',' + echo_command) in echoes:
+		return 1
+	elif echo_command in reserved_commands:
+		return 2
+	else:
+		with open('KuhnerdmBotEchoes.txt', 'r+') as echoes_file:
 			num_lines = sum(1 for line in echoes_file)
 			for line in (echoes_file):
 				pass
@@ -83,9 +83,10 @@ def add_echo(args):
 			print "Command: " + echo_command
 			print "Response: " + echo_response
 			print "User: " + nick
-			return 0
 			
-	echoes = populate_echoes()
+		echoes = populate_echoes()
+		return 0
+			
 
 '''
 delete_echo(command):
@@ -143,7 +144,6 @@ def getdogemarketcapinfo(): # Used in ,dogemarketcap command
 reserved_commands =['echo', 'say', 'help', 'window', 'fud', 'pi', 'ping', 'pong', 'dogemined', 'dogemarketcap']
 echoes = {}
 echoes = populate_echoes()
-print echoes # Debug
 
 '''Set up debug mode'''
 
