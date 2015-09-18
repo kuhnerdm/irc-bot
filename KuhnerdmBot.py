@@ -9,7 +9,7 @@ locale.setlocale(locale.LC_ALL, 'usa') # Sets default locale to USA
 Connection details - Edit here
 '''
 
-debug = False # For debug mode
+debug = True # For debug mode
 nick = 'KuhnerdmBot' # Define nick on IRC
 pw = '12345luggagecombo' # Define pass on IRC
 network = 'irc.freenode.net' # Define IRC network
@@ -41,7 +41,7 @@ def populate_echoes():
 		num_lines = sum(1 for line in echoes_file)
 	with open('KuhnerdmBotEchoes.txt', 'r') as echoes_file:
 		for x in range(num_lines / 3):
-			echo_command = ',' + echoes_file.readline().replace('Command: ', '').replace('\r', '').replace('\n', '')
+			echo_command = ',' + echoes_file.readline().replace('Command: ', '').replace('\r', '').replace('\n', '').replace(',\xef\xbb\xbf', '')
 			echo_response = echoes_file.readline().replace('Response: ', '').replace('\r', '').replace('\n', '')
 			echo_nick = echoes_file.readline().replace('User: ', '').replace('\r', '').replace('\n', '')
 			echoes[echo_command] = [echo_response, echo_nick]
@@ -143,6 +143,7 @@ def getdogemarketcapinfo(): # Used in ,dogemarketcap command
 reserved_commands =['echo', 'say', 'help', 'window', 'fud', 'pi', 'ping', 'pong', 'dogemined', 'dogemarketcap']
 echoes = {}
 echoes = populate_echoes()
+print echoes # Debug
 
 '''Set up debug mode'''
 
@@ -184,7 +185,7 @@ while True: # Loops until connection breaks
 			print 'Message is ' + message.rstrip('\r\n') + ' from ' + nick + '\r\n' # For debug
 			if message.strip() != '': # If there is not just whitespace in the message
 				function = (message.split( )[0]).replace('\r', '').replace('\n', '') # The function is the first thing in the message
-				print 'Funtion is ' + function + ' From ' + nick + '\r\n' # For debug
+				print 'Function is ' + function + ' From ' + nick + '\r\n' # For debug
 				arg = message.split(" ") # arg[0] is the command; arg[1] is the first argument
 				args = '' # Create the args variable
 				for index,item in enumerate(arg) : # For every index and item in arg
