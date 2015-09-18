@@ -5,7 +5,7 @@ This repo contains the code for an IRC bot to be run through the command line. I
 
 #Setup
 
-* In KuhnerdmBot.py, under "Connection Details - Edit here", change the following fields:
+In KuhnerdmBot.py, under "Connection Details - Edit here", change the following fields:
 
     debug    - Change to "true" to use the debug channel instead of the channel specified in "chan"
     nick     - The IRC nick of the bot
@@ -14,8 +14,8 @@ This repo contains the code for an IRC bot to be run through the command line. I
     port     - The port of the IRC server to connect to
     chan     - The channel of the IRC server to connect to
     usernick - The IRC nick of the user running the bot (i.e. your nick)
-
-* Run KuhnerdmBot.py from the command line in the irc-bot directory
+    
+Run KuhnerdmBot.py from the command line in the irc-bot directory.
 
 #Functions
 
