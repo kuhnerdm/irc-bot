@@ -5,28 +5,28 @@ This repo contains the code for an IRC bot to be run through the command line. I
 
 #Setup
 
-1. In KuhnerdmBot.py, under "Connection Details - Edit here", change the following fields:
+* In KuhnerdmBot.py, under "Connection Details - Edit here", change the following fields:
 
-* debug    - Change to "true" to use the debug channel instead of the channel specified in "chan"
-* nick     - The IRC nick of the bot
-* pw       - The IRC pass of the bot
-* network  - The IRC server to connect to
-* port     - The port of the IRC server to connect to
-* chan     - The channel of the IRC server to connect to
-* usernick - The IRC nick of the user running the bot (i.e. your nick)
+    debug    - Change to "true" to use the debug channel instead of the channel specified in "chan"
+    nick     - The IRC nick of the bot
+    pw       - The IRC pass of the bot
+    network  - The IRC server to connect to
+    port     - The port of the IRC server to connect to
+    chan     - The channel of the IRC server to connect to
+    usernick - The IRC nick of the user running the bot (i.e. your nick)
 
-\2. Run KuhnerdmBot.py from the command line in the irc-bot directory
+* Run KuhnerdmBot.py from the command line in the irc-bot directory
 
 #Functions
 
 **Receiving Messages** - irc-bot works by repeatedly calling "recv" on the socket connection and storing the raw input in "data." It then parses the data into several useful fields:
 
-* message     - String containing data minus miscellaneous server info
-* nick        - String containing the nick of the user who sent "message"
-* destination - String containing the receiving channel
-* function    - String containing first word in the message
-* args        - String containing all arguments in "message" (i.e. words after "function")
-* arg         - List containing all arguments *including* "function" (i.e. arg[0] = function; arg[1] = first arg)
+    message     - String containing data minus miscellaneous server info
+    nick        - String containing the nick of the user who sent "message"
+    destination - String containing the receiving channel
+    function    - String containing first word in the message
+    args        - String containing all arguments in "message" (i.e. words after "function")
+    arg         - List containing all arguments *including* "function" (i.e. arg[0] = function; arg[1] = first arg)
 
 **Sending Messages** - irc-bot posts to the IRC channel by sending the server a message in IRC protocol. The process is simplified by the use of "send_to_channel", which takes a string and posts it to the channel. irc-bot also responds to pings in a similar manner, but the process is automated.
 
